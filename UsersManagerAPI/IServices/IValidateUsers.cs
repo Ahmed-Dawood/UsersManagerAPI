@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace UsersManagerAPI.IServices
 {
-    interface IValidateUsers
+    public interface IValidateUsers
     {
         Task<bool> AuthenticateAsync(string UserName, string Password);
     }
