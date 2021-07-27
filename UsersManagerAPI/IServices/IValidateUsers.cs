@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace UsersManagerAPI.IServices
 {
-    public interface ITokensGenerator
+    interface IValidateUsers
     {
-        Task<string> NewTokenAsync(string userName);
+        Task<bool> AuthenticateAsync(string UserName, string Password);
     }
 }
