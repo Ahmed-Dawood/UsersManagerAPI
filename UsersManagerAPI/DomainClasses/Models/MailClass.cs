@@ -7,8 +7,8 @@ namespace UsersManagerAPI.DomainClasses.Models
 {
     public class MailClass
     {
-        public string FromMailId { get; set; } = "akdawood21@gmail.com";
-        public string FromMailPassword { get; set; } = "4rgvevs-0dRD^&@Bx+)sfd";
+        public string FromMailId { get; set; } = "email";
+        public string FromMailPassword { get; set; } = "password";
         public List<string> ToMailIds { get; set; } = new List<string>();
         public string Subject { get; set; } = "";
         public string Body { get; set; } = "";

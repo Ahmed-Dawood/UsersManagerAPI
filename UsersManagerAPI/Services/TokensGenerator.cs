@@ -12,7 +12,7 @@ namespace UsersManagerAPI.Services
     {
         private JwtSecurityTokenHandler tokenHandler;
         private byte[] secretKey;
-        private string key = "A345rbde&3yd(@%$Nckeoc-e9vjv97c9";
+        private string key = "A345rbde&3yd(@%$Nckeoc-e9vjv97c9"; //your 32 char secret key like what is written
 
         public TokensGenerator()
         {
