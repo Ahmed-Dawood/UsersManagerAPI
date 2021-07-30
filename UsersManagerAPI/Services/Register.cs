@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UsersManagerAPI.DomainClasses.Models;
 using UsersManagerAPI.IServices;
@@ -8,9 +9,20 @@ namespace UsersManagerAPI.Services
     public class Register : IRegister
     {
         UserInfo _loginInfo = new UserInfo();
-        public Task<string> ConfirmMail(string UserName)
+        async public Task<string> ConfirmMail(string UserName)
         {
-            throw new NotImplementedException();
+            MailService mailService = new MailService();
+
+            MailClass mail = new MailClass()
+            {
+                Body = mailService.GetMailBody(UserName),
+                IsBodyHtml = true,
+                Subject = "Hi From Far",
+                ToMailIds = new List<string>() { new string("akdawood97@gmail.com") }
+            };
+
+            string msg = await mailService.SendMail(mail);
+            return msg;
         }
 
         async public Task<UserInfo> SignUp(UserInfo loginInfo)

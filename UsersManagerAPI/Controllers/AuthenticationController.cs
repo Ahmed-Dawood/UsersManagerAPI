@@ -20,31 +20,20 @@ namespace UsersManagerAPI.Controllers
             this.TokensGenerator = TokensGenerator;
             this.ValidateUsers = ValidateUsers;
         }
-        [HttpGet("Authenticate")]
-        async public Task<IActionResult> Authenticate([FromQuery] string userName, [FromQuery] string pwd)
+        [HttpPost("RegisterUser")]
+        async public Task<IActionResult> Register([FromBody]RegisterInfo userRegisterInfo)
         {
-            //Test Mail Sender
-            MailService mailService = new MailService();
-
-            MailClass mail = new MailClass()
-            {
-                Body = mailService.GetMailBody("Ahmed Dawood"),
-                IsBodyHtml = true,
-                Subject = "Hi From Far",
-                ToMailIds = new List<string>() { new string("akdawood97@gmail.com") }
-            };
-
-            string msg = await mailService.SendMail(mail);
-
-            //------------------------------------------
-
-            bool Confirmation = await ValidateUsers.AuthenticateAsync(userName, pwd);
+            return Ok();
+        }
+        [HttpGet("Authenticate")]
+        async public Task<IActionResult> Authenticate([FromBody]LoginInfo loginInfo)
+        {          
+            bool Confirmation = await ValidateUsers.AuthenticateAsync(loginInfo.Email, loginInfo.Password);
             if (Confirmation)
             {
                 return Ok(new
                 {
-                    Token = await TokensGenerator.NewTokenAsync(userName),
-                    msg = msg
+                    Token = await TokensGenerator.NewTokenAsync(loginInfo.Email)
                 });
             }
             else
