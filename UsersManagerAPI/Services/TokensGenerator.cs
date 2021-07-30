@@ -22,7 +22,7 @@ namespace UsersManagerAPI.Services
 
         async public Task<string> NewTokenAsync(string userName)
         {
-            //get user token data from users DB Async
+            //get user token data from users DB Async ------- WIP
             //-----------
             var tokenDescriptor = new SecurityTokenDescriptor
             {
