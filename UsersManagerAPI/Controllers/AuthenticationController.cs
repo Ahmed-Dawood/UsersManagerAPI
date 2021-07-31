@@ -47,7 +47,7 @@ namespace UsersManagerAPI.Controllers
         {
             return Ok(new
             {
-                Token = await TokensGenerator.NewTokenAsync("Ahmed"),
+                Token = await TokensGenerator.NewTokenAsync(username),
                 UserName = username
             });
         }

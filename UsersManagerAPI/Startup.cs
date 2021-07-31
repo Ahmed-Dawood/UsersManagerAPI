@@ -1,12 +1,14 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
+using UsersManagerAPI.DataAccess;
 using UsersManagerAPI.DomainClasses.Common;
 using UsersManagerAPI.IServices;
 using UsersManagerAPI.Services;
@@ -26,7 +28,7 @@ namespace UsersManagerAPI
         {
             Global.ConnectionString = Configuration.GetConnectionString("UserDB");
             Global.DomainName = Configuration["DomainName"];
-            //services.AddDbContextPool<UsersBDContext>(option => option.UseSqlServer(Configuration.GetConnectionString("UserDB")));
+            services.AddDbContextPool<UsersBDContext>(option => option.UseSqlServer(Configuration.GetConnectionString("UserDB")));
             services.AddTransient<ITokensGenerator, TokensGenerator>();
             services.AddTransient<IValidateUsers, ValidateUsers>();
             services.AddTransient<IUserInfoHandler, UserInfoHandler>();
