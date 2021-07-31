@@ -6,6 +6,7 @@ namespace UsersManagerAPI.DomainClasses.Models
 {
     public class UserInfo : RegisterInfo
     {
+        //WIP
         [Key]
         public int UserId { get; set; }
 

@@ -36,6 +36,7 @@ namespace UsersManagerAPI.Services
 
         async public Task<string> SendMail(MailClass mailClass)
         {
+            //WIP
             try
             {
                 using (MailMessage mail = new MailMessage())

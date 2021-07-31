@@ -11,6 +11,7 @@ namespace UsersManagerAPI.Services
         UserInfo _loginInfo = new UserInfo();
         async public Task<string> ConfirmMail(string UserName)
         {
+            //WIP
             MailService mailService = new MailService();
 
             MailClass mail = new MailClass()
@@ -27,6 +28,7 @@ namespace UsersManagerAPI.Services
 
         async public Task<UserInfo> SignUp(UserInfo loginInfo)
         {
+            //WIP
             _loginInfo = new UserInfo();
             try
             {
@@ -44,12 +46,13 @@ namespace UsersManagerAPI.Services
             UserInfo loginInfo_ = new UserInfo();
             if (!string.IsNullOrEmpty(loginInfo.Email))
             {
-                loginInfo_ = await this.GetLoginUser(loginInfo.Email);
+                loginInfo_ = await GetLoginUser(loginInfo.Email);
             }
             return true;
         }
         async public Task<UserInfo> GetLoginUser(string userName)
         {
+            //WIP
             //UserInfo loginInfo = new UserInfo();
             //using (IDbConnection connection = new SqlConnection(Global.ConnectionString))
             //{
