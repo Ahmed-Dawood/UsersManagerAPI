@@ -15,8 +15,6 @@ namespace UsersManagerAPI.DomainClasses.Models
 
         public string AccountType { get; set; }
 
-        public string Company { get; set; }
-
         public string AccountPricingPlan { get; set; }
 
         public DateTime? CreatedDate { get; set; }

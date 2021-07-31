@@ -42,9 +42,9 @@ namespace UsersManagerAPI.Services
         async public Task<bool> CheckRecordExistence(UserInfo loginInfo)
         {
             UserInfo loginInfo_ = new UserInfo();
-            if (!string.IsNullOrEmpty(loginInfo.UserName))
+            if (!string.IsNullOrEmpty(loginInfo.Email))
             {
-                loginInfo_ = await this.GetLoginUser(loginInfo.UserName);
+                loginInfo_ = await this.GetLoginUser(loginInfo.Email);
             }
             return true;
         }

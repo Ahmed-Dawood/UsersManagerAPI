@@ -10,5 +10,6 @@ namespace UsersManagerAPI.DataAccess
 
         }
         public DbSet<UserInfo> Users { get; set; }
+        public DbSet<CompanyInfo> Companies { get; set; }
     }
 }
