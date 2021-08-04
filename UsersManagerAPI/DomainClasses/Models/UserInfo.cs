@@ -23,6 +23,6 @@ namespace UsersManagerAPI.DomainClasses.Models
         public DateTime? UpdatedDate { get; set; }
 
         [NotMapped]
-        public string Messege { get; set; }
+        public string Message { get; set; }
     }
 }

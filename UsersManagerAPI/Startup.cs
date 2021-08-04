@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
 using UsersManagerAPI.DataAccess;
+using UsersManagerAPI.DataAccess.IDataAccess;
 using UsersManagerAPI.DomainClasses.Common;
 using UsersManagerAPI.IServices;
 using UsersManagerAPI.Services;
@@ -32,6 +33,7 @@ namespace UsersManagerAPI
             services.AddTransient<ITokensGenerator, TokensGenerator>();
             services.AddTransient<IValidateUsers, ValidateUsers>();
             services.AddTransient<IUserInfoHandler, UserInfoHandler>();
+            services.AddTransient<IUsersCRUD , UsersCRUD>();
             services.AddControllers();
             services.AddAuthentication(o =>
             {

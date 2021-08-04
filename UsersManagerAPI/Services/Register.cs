@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using UsersManagerAPI.DataAccess.IDataAccess;
+using UsersManagerAPI.DomainClasses.Common;
 using UsersManagerAPI.DomainClasses.Models;
 using UsersManagerAPI.IServices;
 
@@ -8,10 +10,17 @@ namespace UsersManagerAPI.Services
 {
     public class Register : IRegister
     {
-        UserInfo _loginInfo = new UserInfo();
+        private IUsersCRUD UsersCURD { get; set; }
+        UserInfo userInfo;
+
+        public Register(IUsersCRUD usersCURD)
+        {
+            userInfo = new UserInfo();
+            UsersCURD = usersCURD;
+        }
+
         async public Task<string> ConfirmMail(string UserName)
         {
-            //WIP
             MailService mailService = new MailService();
 
             MailClass mail = new MailClass()
@@ -19,51 +28,39 @@ namespace UsersManagerAPI.Services
                 Body = mailService.GetMailBody(UserName),
                 IsBodyHtml = true,
                 Subject = "Hi From Far",
-                ToMailIds = new List<string>() { new string("akdawood97@gmail.com") }
+                ToMailIds = new List<string>() {"akdawood97@gmail.com"}
             };
 
             string msg = await mailService.SendMail(mail);
             return msg;
         }
-
-        async public Task<UserInfo> SignUp(UserInfo loginInfo)
+        async public Task<UserInfo> SignUp(RegisterInfo RegisterInfo)
         {
-            //WIP
-            _loginInfo = new UserInfo();
             try
             {
-                //LoginInfo loginInfo_ = await this.CheckRecordExistence(loginInfo);
+                if (!string.IsNullOrEmpty(RegisterInfo.Email))
+                {
+                    userInfo = await UsersCURD.GetUser(RegisterInfo.Email);
+                    if (userInfo.Message == Message.UserAlreadyExist)
+                    {
+
+                    }
+                }
+                bool UserExistFlag = await CheckRecordExistence(RegisterInfo.Email); 
+                if(!UserExistFlag)
+                {
+
+                }
             }
             catch (Exception ex)
             {
-                _loginInfo.Messege = ex.Message;
+                userInfo.Message = ex.Message;
             }
-            return _loginInfo;
+            return userInfo;
         }
-
-        async public Task<bool> CheckRecordExistence(UserInfo loginInfo)
+        async Task<bool> CheckRecordExistence(string UserEmail)
         {
-            UserInfo loginInfo_ = new UserInfo();
-            if (!string.IsNullOrEmpty(loginInfo.Email))
-            {
-                loginInfo_ = await GetLoginUser(loginInfo.Email);
-            }
-            return true;
-        }
-        async public Task<UserInfo> GetLoginUser(string userName)
-        {
-            //WIP
-            //UserInfo loginInfo = new UserInfo();
-            //using (IDbConnection connection = new SqlConnection(Global.ConnectionString))
-            //{
-            //    if (connection.State == ConnectionState.Closed) connection.Open();
-
-            //    string SqlCommand = "";
-
-            //    if (!string.IsNullOrEmpty(userName)) SqlCommand += " AND Username='" + userName + "'";
-
-            //};
-            return null;//loginInfo;
+                        
         }
     }
 }

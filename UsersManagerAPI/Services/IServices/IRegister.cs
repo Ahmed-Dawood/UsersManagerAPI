@@ -5,7 +5,7 @@ namespace UsersManagerAPI.IServices
 {
     public interface IRegister
     {
-        Task<UserInfo> SignUp(UserInfo loginInfo);
+        Task<UserInfo> SignUp(RegisterInfo RegisterInfo);
         Task<string> ConfirmMail(string UserName);
     }
 }

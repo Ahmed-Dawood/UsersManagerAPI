@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using UsersManagerAPI.DomainClasses.Models;
 
-namespace UsersManagerAPI.IServices
+namespace UsersManagerAPI.Services.IServices
 {
     public interface IMailService
     {
