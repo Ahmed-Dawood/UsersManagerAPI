@@ -40,7 +40,7 @@ namespace UsersManagerAPI.Services
             {
                 if (!string.IsNullOrEmpty(RegisterInfo.Email))
                 {
-                    userInfo = await UsersCURD.GetUser(RegisterInfo.Email);
+                    userInfo = UsersCURD.GetUser(RegisterInfo.Email);
                     if (userInfo.Message == Message.UserAlreadyExist)
                     {
 
@@ -60,7 +60,7 @@ namespace UsersManagerAPI.Services
         }
         async Task<bool> CheckRecordExistence(string UserEmail)
         {
-                        
+            return true;
         }
     }
 }

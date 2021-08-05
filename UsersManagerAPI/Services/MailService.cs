@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using UsersManagerAPI.DomainClasses.Common;
 using UsersManagerAPI.DomainClasses.Models;
 using UsersManagerAPI.IServices;
+using UsersManagerAPI.Services.IServices;
 
 namespace UsersManagerAPI.Services
 {

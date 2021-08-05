@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace UsersManagerAPI.DomainClasses.Models
 {
@@ -12,6 +13,7 @@ namespace UsersManagerAPI.DomainClasses.Models
         [Required(ErrorMessage = "Password is required")]
         [StringLength(255, ErrorMessage = "Must be between 5 and 255 character", MinimumLength = 5)]
         [DataType(DataType.Password)]
+        [NotMapped]
         public string Password { get; set; }
     }
 }
