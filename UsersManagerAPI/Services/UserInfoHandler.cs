@@ -8,8 +8,8 @@ namespace UsersManagerAPI.Services
         async public Task<bool> AuthenticateAsync(string UserName, string Password)
         {
             if (!string.IsNullOrWhiteSpace(UserName) &&
-                !string.IsNullOrWhiteSpace(Password) &&
-                await //check DB(UserName, Password))
+                !string.IsNullOrWhiteSpace(Password))
+                //await //check DB(UserName, Password))
                 return true;
             else
                 return false;
