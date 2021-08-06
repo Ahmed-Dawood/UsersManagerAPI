@@ -5,9 +5,14 @@ namespace UsersManagerAPI.Services
 {
     public class UserInfoHandler : IUserInfoHandler
     {
-        async public Task<bool> ValidateAsync(string UserName, string Password)
+        async public Task<bool> AuthenticateAsync(string UserName, string Password)
         {
-            return true;
+            if (!string.IsNullOrWhiteSpace(UserName) &&
+                !string.IsNullOrWhiteSpace(Password) &&
+                await //check DB(UserName, Password))
+                return true;
+            else
+                return false;
         }
     }
 }

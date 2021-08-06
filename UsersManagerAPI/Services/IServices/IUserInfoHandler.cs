@@ -7,6 +7,6 @@ namespace UsersManagerAPI.IServices
 {
     public interface IUserInfoHandler
     {
-        Task<bool> ValidateAsync(string UserName, string Password);
+        Task<bool> AuthenticateAsync(string UserName, string Password);
     }
 }

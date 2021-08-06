@@ -12,13 +12,14 @@ namespace UsersManagerAPI.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly ITokensGenerator TokensGenerator;
-        private readonly IValidateUsers ValidateUsers;
+        private readonly IUserInfoHandler UserInfoHandler;
+
         public AuthenticationController(
-            ITokensGenerator TokensGenerator, 
-            IValidateUsers ValidateUsers)
+            ITokensGenerator TokensGenerator,
+            IUserInfoHandler UserInfoHandler)
         {
             this.TokensGenerator = TokensGenerator;
-            this.ValidateUsers = ValidateUsers;
+            this.UserInfoHandler = UserInfoHandler;
         }
         [HttpPost("RegisterUser")]
         async public Task<IActionResult> Register([FromBody]RegisterInfo userRegisterInfo)
@@ -28,7 +29,7 @@ namespace UsersManagerAPI.Controllers
         [HttpGet("Authenticate")]
         async public Task<IActionResult> Authenticate([FromBody]LoginInfo loginInfo)
         {          
-            bool Confirmation = await ValidateUsers.AuthenticateAsync(loginInfo.Email, loginInfo.Password);
+            bool Confirmation = await UserInfoHandler.AuthenticateAsync(loginInfo.Email, loginInfo.Password);
             if (Confirmation)
             {
                 return Ok(new

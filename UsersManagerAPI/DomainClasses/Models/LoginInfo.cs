@@ -8,6 +8,7 @@ namespace UsersManagerAPI.DomainClasses.Models
         [Display(Name = "Email Address")]
         [Required(ErrorMessage = "Email address is required")]
         [EmailAddress(ErrorMessage = "Invalid Email Address")]
+        [MaxLength(255)]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Password is required")]

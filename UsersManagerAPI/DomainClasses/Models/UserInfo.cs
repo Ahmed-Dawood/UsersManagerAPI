@@ -19,12 +19,18 @@ namespace UsersManagerAPI.DomainClasses.Models
         [Required]
         public bool IsMailConfirmed { get; set; }
 
+        [MaxLength(16)]
+        [Column(TypeName = "varchar(16)")]
         public string Role { get; set; }
 
         [Required]
+        [MaxLength(16)]
+        [Column(TypeName = "varchar(16)")]
         public string AccountType { get; set; }
 
         [Required]
+        [MaxLength(16)]
+        [Column(TypeName = "varchar(16)")]
         public string AccountPricingPlan { get; set; }
 
         [Required]
