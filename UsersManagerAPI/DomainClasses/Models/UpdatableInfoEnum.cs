@@ -9,6 +9,7 @@ namespace UsersManagerAPI.DomainClasses.Models
     {
         FirstName,
         LastName,
+        UserName,
         Email,
         Password,
         IsMailConfirmed,

@@ -8,7 +8,7 @@ namespace UsersManagerAPI.DataAccess.IDataAccess
 {
     public interface IUsersCRUD
     {
-        UserInfo GetUserCredentials(string userEmail);
+        UserInfo GetUser(string userEmail);
 
         Task<UserInfo> AddUserAsync(UserInfo userInfo);
 

@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using UsersManagerAPI.DomainClasses.Models;
 using UsersManagerAPI.IServices;
 
 namespace UsersManagerAPI.Services
@@ -20,7 +21,7 @@ namespace UsersManagerAPI.Services
             secretKey = Encoding.ASCII.GetBytes(key);
         }
 
-        async public Task<string> NewTokenAsync(string userName)
+        async public Task<string> NewTokenAsync(UserInfo UserInfo)
         {
             //get user token data from users DB Async ------- WIP
             //-----------

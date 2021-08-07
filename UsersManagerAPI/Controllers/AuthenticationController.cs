@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using UsersManagerAPI.DomainClasses.Common;
 using UsersManagerAPI.DomainClasses.Models;
 using UsersManagerAPI.IServices;
 using UsersManagerAPI.Services;
@@ -29,12 +30,12 @@ namespace UsersManagerAPI.Controllers
         [HttpGet("Authenticate")]
         async public Task<IActionResult> Authenticate([FromBody]LoginInfo loginInfo)
         {          
-            bool Confirmation = await UserInfoHandler.AuthenticateAsync(loginInfo.Email, loginInfo.Password);
-            if (Confirmation)
+            UserInfo UserInfo = await UserInfoHandler.AuthenticateAsync(loginInfo.UserName, loginInfo.Password);
+            if (UserInfo.Message == Message.Success)
             {
                 return Ok(new
                 {
-                    Token = await TokensGenerator.NewTokenAsync(loginInfo.Email)
+                    Token = await TokensGenerator.NewTokenAsync(UserInfo)
                 });
             }
             else
@@ -48,7 +49,7 @@ namespace UsersManagerAPI.Controllers
         {
             return Ok(new
             {
-                Token = await TokensGenerator.NewTokenAsync(username),
+                //Token = await TokensGenerator.NewTokenAsync(UserInfo),
                 UserName = username
             });
         }

@@ -17,18 +17,14 @@ namespace UsersManagerAPI.DataAccess
             UsersBD = usersBD;
         }        
 
-        public UserInfo GetUserCredentials(string userEmail)
+        public UserInfo GetUser(string userName)
         {
             UserInfo userinfo = new UserInfo();
             try
             {
                 userinfo = UsersBD.Users
-                    .Where(u => u.Email == userEmail)
-                    .Select(x => new UserInfo { 
-                        SaltKey = x.SaltKey,
-                        HashPassword = x.HashPassword })
+                    .Where(u => u.UserName == userName)                  
                     .First();
-                userinfo.Email = userEmail;
                 userinfo.Message = Message.Success;
             }
             catch (Exception ex)
@@ -45,7 +41,7 @@ namespace UsersManagerAPI.DataAccess
             {
                 try
                 {
-                    var userinfo = UsersBD.Users.Where(u => u.Email == userInfo.Email).First();
+                    var userinfo = UsersBD.Users.Where(u => u.UserName == userInfo.UserName).First();
                     userInfo.Message = Message.UserAlreadyExist;
                 }
                 catch (Exception)
@@ -63,12 +59,12 @@ namespace UsersManagerAPI.DataAccess
             return userInfo;
         }
 
-        async public Task<UserInfo> DeleteUser(string userEmail)
+        async public Task<UserInfo> DeleteUser(string userName)
         {
             UserInfo userInfo = new UserInfo();
             try
             {
-                var userinfo = UsersBD.Users.Where(u => u.Email == userEmail).FirstOrDefault();
+                var userinfo = UsersBD.Users.Where(u => u.UserName == userName).FirstOrDefault();
                 userinfo.IsDeleted = true;
                 await UsersBD.SaveChangesAsync();
                 userinfo.Message = Message.UserRemoved;
@@ -85,7 +81,7 @@ namespace UsersManagerAPI.DataAccess
         {
             try
             {
-                var userinfo = UsersBD.Users.Where(u => u.Email == userInfo.Email).FirstOrDefault();
+                var userinfo = UsersBD.Users.Where(u => u.UserName == userInfo.UserName).FirstOrDefault();
                 foreach (var item in UpdatedItems)
                 {
                     switch (item)
