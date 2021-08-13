@@ -13,24 +13,26 @@ namespace UsersManagerAPI.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly ITokensGenerator TokensGenerator;
-        private readonly IAuthenticateUser UserInfoHandler;
+        private readonly IAuthenticateUser AuthenticateUser;
 
         public AuthenticationController(
             ITokensGenerator TokensGenerator,
-            IAuthenticateUser UserInfoHandler)
+            IAuthenticateUser AuthenticateUser)
         {
             this.TokensGenerator = TokensGenerator;
-            this.UserInfoHandler = UserInfoHandler;
+            this.AuthenticateUser = AuthenticateUser;
         }
         [HttpPost("SignUp")]
         async public Task<IActionResult> Register([FromBody]RegisterInfo userRegisterInfo)
         {
+            UserInfo userInfo = (UserInfo)userRegisterInfo;
+
             return Ok();
         }
         [HttpGet("Authenticate")]
         async public Task<IActionResult> Authenticate([FromBody]LoginInfo loginInfo)
         {          
-            UserInfo UserInfo = UserInfoHandler.AuthenticateAsync(loginInfo.UserName, loginInfo.Password);
+            UserInfo UserInfo = AuthenticateUser.AuthenticateAsync(loginInfo.UserName, loginInfo.Password);
             if (UserInfo.Message == Message.Success)
             {
                 return Ok(new

@@ -19,33 +19,21 @@ namespace UsersManagerAPI.Services
             UsersCURD = usersCURD;
         }
 
-        async public Task<UserInfo> SignUp(RegisterInfo RegisterInfo)
+        async public Task<UserInfo> SignUp(UserInfo RegisterInfo)
         {
             try
             {
                 if (!string.IsNullOrEmpty(RegisterInfo.Email))
                 {
-                    userInfo = UsersCURD.GetUser(RegisterInfo.Email);
-                    if (userInfo.Message == Message.UserAlreadyExist)
-                    {
-
-                    }
-                }
-                bool UserExistFlag = await CheckRecordExistence(RegisterInfo.Email); 
-                if(!UserExistFlag)
-                {
-
+                    userInfo = await UsersCURD.AddUserAsync(RegisterInfo);                    
                 }
             }
             catch (Exception ex)
             {
-                userInfo.Message = ex.Message;
+                userInfo.Message = Message.ErrorFound;
+                userInfo.DetailedMessage = ex.InnerException.Message;
             }
             return userInfo;
-        }
-        async Task<bool> CheckRecordExistence(string UserEmail)
-        {
-            return true;
         }
     }
 }

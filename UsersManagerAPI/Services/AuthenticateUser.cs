@@ -1,16 +1,15 @@
-﻿using System.Threading.Tasks;
-using System.Security.Cryptography;
-using UsersManagerAPI.DataAccess.IDataAccess;
+﻿using UsersManagerAPI.DataAccess.IDataAccess;
 using UsersManagerAPI.DomainClasses.Common;
 using UsersManagerAPI.DomainClasses.Models;
 using UsersManagerAPI.IServices;
-using System.Text;
+using UsersManagerAPI.SecurityServices;
 
 namespace UsersManagerAPI.Services
 {
     public class AuthenticateUser : IAuthenticateUser
     {
         public IUsersCRUD UsersCRUD { get; }
+        Hashing HashingService = new Hashing();
 
         public AuthenticateUser(IUsersCRUD usersCRUD)
         {
@@ -36,7 +35,7 @@ namespace UsersManagerAPI.Services
                !string.IsNullOrWhiteSpace(Password))
             {
                 userInfo = UsersCRUD.GetUser(UserName);
-                string HashedPassword = ComputeSha256Hash(userInfo.SaltKey + Password);
+                string HashedPassword = HashingService.ComputeSha256Hash(userInfo.SaltKey + Password);
                 if (HashedPassword == userInfo.HashPassword)
                     userInfo.Message = Message.Success;
                 else
@@ -48,23 +47,6 @@ namespace UsersManagerAPI.Services
                 userInfo.Message = Message.InvalidUser;
                 return userInfo;
             } 
-        }
-        private string ComputeSha256Hash(string rawData)
-        {
-            // Create a SHA256   
-            using (SHA256 sha256Hash = SHA256.Create())
-            {
-                // ComputeHash - returns byte array  
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
-
-                // Convert byte array to a string   
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < bytes.Length; i++)
-                {
-                    builder.Append(bytes[i].ToString("x2"));
-                }
-                return builder.ToString();
-            }
         }
     }
 }
