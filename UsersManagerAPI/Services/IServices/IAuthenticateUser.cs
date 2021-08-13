@@ -6,7 +6,7 @@ using UsersManagerAPI.DomainClasses.Models;
 
 namespace UsersManagerAPI.IServices
 {
-    public interface IUserInfoHandler
+    public interface IAuthenticateUser
     {
         UserInfo AuthenticateAsync(string UserName, string Password);
     }

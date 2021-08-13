@@ -31,7 +31,7 @@ namespace UsersManagerAPI
             Global.DomainName = Configuration["DomainName"];
             services.AddDbContextPool<UsersBDContext>(option => option.UseSqlServer(Configuration.GetConnectionString("UserDB")));
             services.AddTransient<ITokensGenerator, TokensGenerator>();
-            services.AddTransient<IUserInfoHandler, UserInfoHandler>();
+            services.AddTransient<IAuthenticateUser, AuthenticateUser>();
             services.AddTransient<IUsersCRUD , UsersCRUD>();
             services.AddControllers();
             services.AddAuthentication(o =>

@@ -8,11 +8,11 @@ using System.Text;
 
 namespace UsersManagerAPI.Services
 {
-    public class UserInfoHandler : IUserInfoHandler
+    public class AuthenticateUser : IAuthenticateUser
     {
         public IUsersCRUD UsersCRUD { get; }
 
-        public UserInfoHandler(IUsersCRUD usersCRUD)
+        public AuthenticateUser(IUsersCRUD usersCRUD)
         {
             UsersCRUD = usersCRUD;
         }
@@ -38,13 +38,9 @@ namespace UsersManagerAPI.Services
                 userInfo = UsersCRUD.GetUser(UserName);
                 string HashedPassword = ComputeSha256Hash(userInfo.SaltKey + Password);
                 if (HashedPassword == userInfo.HashPassword)
-                {
                     userInfo.Message = Message.Success;
-                }
                 else
-                {
                     userInfo.Message = Message.ErrorFound;
-                }
                 return userInfo;
             }
             else
