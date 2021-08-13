@@ -14,6 +14,6 @@ namespace UsersManagerAPI.DataAccess.IDataAccess
 
         Task<UserInfo> DeleteUser(string userEmail);
 
-        Task<UserInfo> UpdateUser(UserInfo userInfo, IEnumerable<UpdatableInfoEnum> UpdatedItems);
+        Task<UserInfo> UpdateUser(UserInfo userInfo);
     }
 }

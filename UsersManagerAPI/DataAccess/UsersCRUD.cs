@@ -77,44 +77,21 @@ namespace UsersManagerAPI.DataAccess
             return userInfo;
         }
 
-        async public Task<UserInfo> UpdateUser(UserInfo userInfo, IEnumerable<UpdatableInfoEnum> UpdatedItems)
+        async public Task<UserInfo> UpdateUser(UserInfo userInfo)
         {
             try
             {
                 var userinfo = UsersBD.Users.Where(u => u.UserName == userInfo.UserName).FirstOrDefault();
-                foreach (var item in UpdatedItems)
-                {
-                    switch (item)
-                    {
-                        case UpdatableInfoEnum.FirstName:
-                            userinfo.FirstName = userInfo.FirstName;
-                            break;
-                        case UpdatableInfoEnum.LastName:
-                            userinfo.LastName = userInfo.LastName;    
-                            break;
-                        case UpdatableInfoEnum.Email:
-                            userinfo.Email = userInfo.Email;
-                            break;
-                        case UpdatableInfoEnum.Password:
-                            userinfo.Password = userInfo.Password;
-                            break;
-                        case UpdatableInfoEnum.IsMailConfirmed:
-                            userinfo.IsMailConfirmed = userInfo.IsMailConfirmed;
-                            break;
-                        case UpdatableInfoEnum.Role:
-                            userinfo.Role = userInfo.Role;
-                            break;
-                        case UpdatableInfoEnum.AccountType:
-                            userinfo.AccountType = userInfo.AccountType;
-                            break;
-                        case UpdatableInfoEnum.AccountPricingPlan:
-                            userinfo.AccountPricingPlan = userInfo.AccountPricingPlan;
-                            break;
-                        case UpdatableInfoEnum.UpdatedDate:
-                            userinfo.UpdatedDate = userInfo.UpdatedDate;
-                            break;
-                    }
-                }
+                userinfo.FirstName = userInfo.FirstName;
+                userinfo.LastName = userInfo.LastName;    
+                userinfo.Email = userInfo.Email;
+                userinfo.HashPassword = userInfo.HashPassword;
+                userinfo.SaltKey = userInfo.SaltKey;
+                userinfo.IsMailConfirmed = userInfo.IsMailConfirmed;
+                userinfo.Role = userInfo.Role;
+                userinfo.AccountType = userInfo.AccountType;
+                userinfo.AccountPricingPlan = userInfo.AccountPricingPlan;
+                userinfo.UpdatedDate = userInfo.UpdatedDate;
                 await UsersBD.SaveChangesAsync();
                 userinfo.Message = Message.Success;
             }

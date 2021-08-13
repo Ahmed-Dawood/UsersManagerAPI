@@ -8,6 +8,6 @@ namespace UsersManagerAPI.IServices
 {
     public interface IUserInfoHandler
     {
-        Task<UserInfo> AuthenticateAsync(string UserName, string Password);
+        UserInfo AuthenticateAsync(string UserName, string Password);
     }
 }
