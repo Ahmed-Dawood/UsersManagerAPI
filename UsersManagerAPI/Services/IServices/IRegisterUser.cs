@@ -3,9 +3,8 @@ using UsersManagerAPI.DomainClasses.Models;
 
 namespace UsersManagerAPI.IServices
 {
-    public interface IRegister
+    public interface IRegisterUser
     {
         Task<UserInfo> SignUp(RegisterInfo RegisterInfo);
-        Task<string> ConfirmMail(string UserName);
     }
 }
