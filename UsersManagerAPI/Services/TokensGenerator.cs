@@ -23,14 +23,12 @@ namespace UsersManagerAPI.Services
 
         async public Task<string> NewTokenAsync(UserInfo UserInfo)
         {
-            //get user token data from users DB Async ------- WIP
-            //-----------
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[] {
-                    new Claim(ClaimTypes.Name, "Ahmed Dawood"),
-                    new Claim(ClaimTypes.Role, "Manager"),
-                    new Claim("UserPlan", "Premium")
+                    new Claim(ClaimTypes.Name, UserInfo.UserName),
+                    new Claim(ClaimTypes.Role, UserInfo.Role),
+                    new Claim("UserPlan", UserInfo.AccountPricingPlan)
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(5),
                 SigningCredentials = new SigningCredentials(

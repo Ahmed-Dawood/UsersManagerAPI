@@ -27,10 +27,10 @@ namespace UsersManagerAPI.DataAccess
                     .First();
                 userinfo.Message = Message.Success;
             }
-            catch (Exception ex)
+            catch
             {
                 userinfo.Message = Message.ErrorFound;
-                userinfo.DetailedMessage = ex.InnerException.Message;
+                userinfo.DetailedMessage = "Error in GetUser method in UsersCRUD class";
             }
             return userinfo;
         }
@@ -51,10 +51,10 @@ namespace UsersManagerAPI.DataAccess
                     userInfo.Message = Message.Success;
                 }                
             }
-            catch (Exception ex)
+            catch
             {
                 userInfo.Message = Message.ErrorFound;
-                userInfo.DetailedMessage = ex.InnerException.Message;
+                userInfo.DetailedMessage = "Error in AddUserAsync method in UsersCRUD class";
             }
             return userInfo;
         }
@@ -72,7 +72,7 @@ namespace UsersManagerAPI.DataAccess
             catch (Exception ex)
             {
                 userInfo.Message = Message.ErrorFound;
-                userInfo.DetailedMessage = ex.InnerException.Message;
+                userInfo.DetailedMessage = "Error in DeleteUser method in UsersCRUD class";
             }
             return userInfo;
         }
@@ -98,7 +98,7 @@ namespace UsersManagerAPI.DataAccess
             catch (Exception ex)
             {
                 userInfo.Message = Message.ErrorFound;
-                userInfo.DetailedMessage = ex.InnerException.Message;
+                userInfo.DetailedMessage = "Error in UpdateUser method in UsersCRUD class";
             }
             return userInfo;
         }

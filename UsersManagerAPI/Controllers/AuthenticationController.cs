@@ -5,6 +5,7 @@ using UsersManagerAPI.DomainClasses.Common;
 using UsersManagerAPI.DomainClasses.Models;
 using UsersManagerAPI.IServices;
 using UsersManagerAPI.Services;
+using System.Text.Json;
 
 namespace UsersManagerAPI.Controllers
 {
@@ -12,22 +13,36 @@ namespace UsersManagerAPI.Controllers
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
+        #region DI attributes
         private readonly ITokensGenerator TokensGenerator;
         private readonly IAuthenticateUser AuthenticateUser;
+        private readonly IRegisterUser RegisterUser;
+        #endregion
 
         public AuthenticationController(
             ITokensGenerator TokensGenerator,
-            IAuthenticateUser AuthenticateUser)
+            IAuthenticateUser AuthenticateUser,
+            IRegisterUser RegisterUser)
         {
             this.TokensGenerator = TokensGenerator;
             this.AuthenticateUser = AuthenticateUser;
+            this.RegisterUser = RegisterUser;
         }
         [HttpPost("SignUp")]
-        async public Task<IActionResult> Register([FromBody]RegisterInfo userRegisterInfo)
+        async public Task<IActionResult> Register([FromBody] RegisterInfo userRegisterInfo)
         {
-            UserInfo userInfo = (UserInfo)userRegisterInfo;
-
-            return Ok();
+            var serializedParent = JsonSerializer.Serialize(userRegisterInfo);
+            UserInfo userInfo = JsonSerializer.Deserialize<UserInfo>(serializedParent);
+            userInfo = await RegisterUser.SignUp(userInfo);
+            if(userInfo.Message == Message.Success)
+            {
+                return Ok(Message.Success);
+            }
+            else
+            {
+                ModelState.AddModelError("Failed", "Failed to sign up");
+                return Ok(ModelState); 
+            }
         }
         [HttpGet("Authenticate")]
         async public Task<IActionResult> Authenticate([FromBody]LoginInfo loginInfo)
@@ -37,6 +52,8 @@ namespace UsersManagerAPI.Controllers
             {
                 return Ok(new
                 {
+                    UserName = UserInfo.UserName,
+                    AccountType = UserInfo.AccountType,
                     Token = await TokensGenerator.NewTokenAsync(UserInfo)
                 });
             }

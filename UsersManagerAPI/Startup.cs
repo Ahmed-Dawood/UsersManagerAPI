@@ -33,6 +33,7 @@ namespace UsersManagerAPI
             services.AddTransient<ITokensGenerator, TokensGenerator>();
             services.AddTransient<IAuthenticateUser, AuthenticateUser>();
             services.AddTransient<IUsersCRUD , UsersCRUD>();
+            services.AddTransient<IRegisterUser, RegisterUser>();
             services.AddControllers();
             services.AddAuthentication(o =>
             {
