@@ -4,7 +4,6 @@ using System.Net.Mail;
 using System.Threading.Tasks;
 using UsersManagerAPI.DomainClasses.Common;
 using UsersManagerAPI.DomainClasses.Models;
-using UsersManagerAPI.IServices;
 using UsersManagerAPI.Services.IServices;
 
 namespace UsersManagerAPI.Services
@@ -43,21 +42,17 @@ namespace UsersManagerAPI.Services
                 using (MailMessage mail = new MailMessage())
                 {
                     mail.From = new MailAddress(mailClass.FromMailId);
-                    //mailClass.ToMailIds.ForEach(x =>
-                    //{
-                    //    mail.To.Add(x);
-                    //});
-                    mail.To.Add("akdawood97@gmail.com");
+                    mail.To.Add(mailClass.ToMailIds);
                     mail.Subject = mailClass.Subject;
                     mail.Body = mailClass.Body;
                     mail.IsBodyHtml = mailClass.IsBodyHtml;
-                    if (mailClass.Attachments != null)
-                    {
-                        mailClass.Attachments.ForEach(x =>
-                        {
-                            mail.Attachments.Add(new Attachment(x));
-                        });
-                    }
+                    //if (mailClass.Attachments != null)
+                    //{
+                    //    mailClass.Attachments.ForEach(x =>
+                    //    {
+                    //        mail.Attachments.Add(new Attachment(x));
+                    //    });
+                    //}
                     using (SmtpClient smtp = new SmtpClient("smtp.gmail.com"))
                     {
                         smtp.Port = 587;

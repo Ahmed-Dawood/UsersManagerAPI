@@ -27,7 +27,7 @@ namespace UsersManagerAPI.Services
             {
                 Subject = new ClaimsIdentity(new Claim[] {
                     new Claim(ClaimTypes.Name, UserInfo.UserName),
-                    new Claim(ClaimTypes.Role, UserInfo.Role),
+                    new Claim("AccountType", UserInfo.AccountType),
                     new Claim("UserPlan", UserInfo.AccountPricingPlan)
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(5),

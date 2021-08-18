@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using UsersManagerAPI.DomainClasses.Models;
 using UsersManagerAPI.Services.IServices;
 
@@ -18,7 +15,7 @@ namespace UsersManagerAPI.Services
                 Body = mailService.GetMailBody(UserName),
                 IsBodyHtml = true,
                 Subject = "Hi From Far",
-                ToMailIds = new List<string>() { "akdawood97@gmail.com" }
+                ToMailIds = "akdawood97@gmail.com"
             };
 
             string msg = await mailService.SendMail(mail);

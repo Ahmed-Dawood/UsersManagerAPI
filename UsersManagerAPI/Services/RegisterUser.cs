@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using UsersManagerAPI.DataAccess.IDataAccess;
 using UsersManagerAPI.DomainClasses.Common;
@@ -12,12 +11,15 @@ namespace UsersManagerAPI.Services
     public class RegisterUser : IRegisterUser
     {
         private IUsersCRUD UsersCURD { get; set; }
-        Hashing Hashingservices = new Hashing();
+        Hashing Hashingservices;
+        SaltKey SaltKey;
         UserInfo userInfo;
 
         public RegisterUser(IUsersCRUD usersCURD)
         {
             userInfo = new UserInfo();
+            SaltKey = new SaltKey();
+            Hashingservices = new Hashing();
             UsersCURD = usersCURD;
         }
 
@@ -27,15 +29,15 @@ namespace UsersManagerAPI.Services
             {
                 if (!string.IsNullOrEmpty(RegisterInfo.Email))
                 {
+                    String rndSaltKey = SaltKey.GetSalt(24);
                     RegisterInfo.CreatedDate = DateTime.Now;
                     RegisterInfo.UpdatedDate = DateTime.Now;
                     RegisterInfo.AccountPricingPlan = "Free";
-                    RegisterInfo.AccountType = "Lone Wolf";
-                    RegisterInfo.SaltKey = "Hamada";
+                    RegisterInfo.AccountType = "Lone_Wolf";
+                    RegisterInfo.SaltKey = rndSaltKey;
                     RegisterInfo.IsMailConfirmed = false;
-                    RegisterInfo.Role = "Admin";
-                    RegisterInfo.HashPassword = Hashingservices.ComputeSha256Hash("Hamada" + RegisterInfo.Password);
-                    userInfo = await UsersCURD.AddUserAsync(RegisterInfo);                    
+                    RegisterInfo.HashPassword = Hashingservices.ComputeSha256Hash(rndSaltKey + RegisterInfo.Password);
+                    userInfo = await UsersCURD.AddUserAsync(RegisterInfo);  
                 }
             }
             catch

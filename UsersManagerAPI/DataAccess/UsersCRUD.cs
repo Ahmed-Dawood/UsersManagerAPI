@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UsersManagerAPI.DataAccess.IDataAccess;
@@ -7,7 +6,7 @@ using UsersManagerAPI.DomainClasses.Common;
 using UsersManagerAPI.DomainClasses.Models;
 
 namespace UsersManagerAPI.DataAccess
-{   
+{
     public class UsersCRUD : IUsersCRUD
     {
         private UsersBDContext UsersBD { get; }
