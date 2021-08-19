@@ -50,7 +50,7 @@ namespace UsersManagerAPI.Controllers
         async public Task<IActionResult> Authenticate([FromBody]LoginInfo loginInfo)
         {
             var serializedParent = JsonSerializer.Serialize(loginInfo);
-            UserInfo = JsonSerializer.Deserialize<IUserInfo>(serializedParent);
+            UserInfo = JsonSerializer.Deserialize<UserInfo>(serializedParent);
             UserInfo = AuthenticateUser.AuthenticateAsync(UserInfo);
             if (UserInfo.Message == Message.Success)
             {
@@ -71,8 +71,7 @@ namespace UsersManagerAPI.Controllers
         async public Task<IActionResult> ConfirmMail([FromQuery] string username)
         {
             return Ok(new
-            {
-                //Token = await TokensGenerator.NewTokenAsync(UserInfo),
+            {                
                 UserName = username
             });
         }

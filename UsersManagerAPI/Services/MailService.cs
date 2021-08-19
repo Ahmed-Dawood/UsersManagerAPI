@@ -4,20 +4,22 @@ using System.Net.Mail;
 using System.Threading.Tasks;
 using UsersManagerAPI.DomainClasses.Common;
 using UsersManagerAPI.DomainClasses.Models;
+using UsersManagerAPI.DomainClasses.Models.IModels;
 using UsersManagerAPI.Services.IServices;
 
 namespace UsersManagerAPI.Services
 {
     public class MailService : IMailService
     {
-        public string GetMailBody(string username)//UserInfo loginInfo)
+        public string GetMailBody(IUserInfo userInfo)
         {
-            string url = Global.DomainName + "api/Authentication/ConfirmMail?username=\"" + username + "\"";
+            string url = Global.DomainName + "api/Authentication/ConfirmMail?username=\"" + userInfo.UserName + "\"";
 
             return string.Format(@"<div style='text-align:center;'>
-                                    <h1>Welcome to our Web Site</h1>
-                                    <h3>Click below button for verify your Email Id</h3>
-                                    <form method='post' action='{0}' style='display: inline;'>
+                                    <h1>Hello {0} {1}.</h1>
+                                    <h2>Welcome to our Website</h2>
+                                    <h3>Click below button for verify your Email Address</h3>
+                                    <form method='post' action='{2}' style='display: inline;'>
                                       <button type = 'submit' style=' display: block;
                                                                     text-align: center;
                                                                     font-weight: bold;
@@ -31,12 +33,11 @@ namespace UsersManagerAPI.Services
                                         Confirm Mail
                                       </button>
                                     </form>
-                                </div>", url);
+                                </div>", userInfo.LastName, userInfo.FirstName[0] ,url);
         }
 
-        async public Task<string> SendMail(MailClass mailClass)
+        async public Task<string> SendMailAsync(MailClass mailClass)
         {
-            //WIP
             try
             {
                 using (MailMessage mail = new MailMessage())
@@ -64,9 +65,9 @@ namespace UsersManagerAPI.Services
                     }
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                return ex.InnerException.Message; ;
+                return Message.ErrorFound;
             }
         }
     }

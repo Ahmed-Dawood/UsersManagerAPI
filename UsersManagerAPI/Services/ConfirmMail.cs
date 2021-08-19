@@ -1,25 +1,33 @@
 ﻿using System.Threading.Tasks;
+using UsersManagerAPI.DomainClasses.Common;
 using UsersManagerAPI.DomainClasses.Models;
+using UsersManagerAPI.DomainClasses.Models.IModels;
 using UsersManagerAPI.Services.IServices;
 
 namespace UsersManagerAPI.Services
 {
     public class ConfirmMail : IConfirmMail
     {
-        async public Task<string> ConfirmEmail(string UserName)
+        async public Task<IUserInfo> ConfirmEmail(IUserInfo userInfo)
         {
             MailService mailService = new MailService();
 
             MailClass mail = new MailClass()
             {
-                Body = mailService.GetMailBody(UserName),
+                Body = mailService.GetMailBody(userInfo),
                 IsBodyHtml = true,
-                Subject = "Hi From Far",
-                ToMailIds = "akdawood97@gmail.com"
+                Subject = "Email Address Confirmation",
+                ToMailIds = userInfo.Email
             };
 
-            string msg = await mailService.SendMail(mail);
-            return msg;
+            userInfo.Message = await mailService.SendMailAsync(mail);
+
+            if (userInfo.Message==Message.ErrorFound)
+            {
+                userInfo.DetailedMessage = userInfo.DetailedMessage + "\nError in ConfirmEmail method in ConfirmMail Class";
+            }
+
+            return userInfo;
         }
     }
 }

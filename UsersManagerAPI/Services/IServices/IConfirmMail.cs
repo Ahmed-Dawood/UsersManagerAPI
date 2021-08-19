@@ -1,9 +1,10 @@
 ﻿using System.Threading.Tasks;
+using UsersManagerAPI.DomainClasses.Models.IModels;
 
 namespace UsersManagerAPI.Services.IServices
 {
     public interface IConfirmMail
     {
-        Task<string> ConfirmEmail(string UserName);
+        Task<IUserInfo> ConfirmEmail(IUserInfo userInfo);
     }
 }

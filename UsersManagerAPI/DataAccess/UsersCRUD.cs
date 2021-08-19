@@ -29,7 +29,7 @@ namespace UsersManagerAPI.DataAccess
             catch
             {
                 userinfo.Message = Message.ErrorFound;
-                userinfo.DetailedMessage = "Error in GetUser method in UsersCRUD class";
+                userinfo.DetailedMessage = userinfo.DetailedMessage + "\nError in GetUser method in UsersCRUD class";
             }
             return userinfo;
         }
@@ -43,9 +43,9 @@ namespace UsersManagerAPI.DataAccess
                     var userinfo = UsersBD.Users.Where(u => u.UserName == userInfo.UserName).First();
                     userInfo.Message = Message.UserAlreadyExist;
                 }
-                catch (Exception)
+                catch
                 {
-                    await UsersBD.Users.AddAsync(userInfo);
+                    await UsersBD.Users.AddAsync((UserInfo)userInfo);
                     await UsersBD.SaveChangesAsync();
                     userInfo.Message = Message.Success;
                 }                
@@ -53,7 +53,7 @@ namespace UsersManagerAPI.DataAccess
             catch
             {
                 userInfo.Message = Message.ErrorFound;
-                userInfo.DetailedMessage = "Error in AddUserAsync method in UsersCRUD class";
+                userInfo.DetailedMessage = userInfo.DetailedMessage + "\nError in AddUserAsync method in UsersCRUD class";
             }
             return userInfo;
         }
@@ -67,10 +67,10 @@ namespace UsersManagerAPI.DataAccess
                 await UsersBD.SaveChangesAsync();
                 userinfo.Message = Message.UserRemoved;
             }
-            catch (Exception ex)
+            catch
             {
                 userInfo.Message = Message.ErrorFound;
-                userInfo.DetailedMessage = "Error in DeleteUser method in UsersCRUD class";
+                userInfo.DetailedMessage = userInfo.DetailedMessage + "\nError in DeleteUser method in UsersCRUD class";
             }
             return userInfo;
         }
@@ -93,10 +93,10 @@ namespace UsersManagerAPI.DataAccess
                 await UsersBD.SaveChangesAsync();
                 userinfo.Message = Message.Success;
             }
-            catch (Exception ex)
+            catch
             {
                 userInfo.Message = Message.ErrorFound;
-                userInfo.DetailedMessage = "Error in UpdateUser method in UsersCRUD class";
+                userInfo.DetailedMessage = userInfo.DetailedMessage + "\nError in UpdateUser method in UsersCRUD class";
             }
             return userInfo;
         }

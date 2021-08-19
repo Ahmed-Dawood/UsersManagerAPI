@@ -15,6 +15,7 @@ using UsersManagerAPI.DomainClasses.Models;
 using UsersManagerAPI.DomainClasses.Models.IModels;
 using UsersManagerAPI.IServices;
 using UsersManagerAPI.Services;
+using UsersManagerAPI.Services.IServices;
 
 namespace UsersManagerAPI
 {
@@ -39,6 +40,7 @@ namespace UsersManagerAPI
             services.AddTransient<IUsersCRUD , UsersCRUD>();
             services.AddTransient<IRegisterUser, RegisterUser>();
             services.AddTransient<IUserInfo, UserInfo>();
+            services.AddTransient<IConfirmMail, ConfirmMail>();
             #endregion
 
             services.AddControllers();

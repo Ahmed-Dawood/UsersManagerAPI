@@ -30,11 +30,13 @@ namespace UsersManagerAPI.Services
                     userInfo.Message = Message.Success;
                 else
                     userInfo.Message = Message.InvalidUser;
+                    userInfo.DetailedMessage = userInfo.DetailedMessage + "\nError in AuthenticateAsync in AuthenticateUser Class";
                 return userInfo;
             }
             else
             {
                 userInfo.Message = Message.InvalidUser;
+                userInfo.DetailedMessage = userInfo.DetailedMessage + "\nError in AuthenticateAsync in AuthenticateUser Class";
                 return userInfo;
             }
         }
