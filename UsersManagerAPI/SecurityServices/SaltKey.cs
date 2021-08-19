@@ -6,7 +6,7 @@ namespace UsersManagerAPI.SecurityServices
     public class SaltKey
     {
         //WIP
-        //creates random salt key to be added to password before hashing
+        //creates random salt key to be added to password before hashing 48-char string
         public string GetSalt(int maximumSaltLength)
         {
             var salt = new byte[maximumSaltLength];

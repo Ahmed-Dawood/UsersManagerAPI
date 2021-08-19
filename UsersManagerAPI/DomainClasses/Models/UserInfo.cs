@@ -41,10 +41,11 @@ namespace UsersManagerAPI.DomainClasses.Models
         public string ConfirmPassword { get; set; }
 
         [Required]
+        [Column(TypeName = "varchar(64)")]
         public string HashPassword { get; set; }
 
         [Required]
-        [Column(TypeName = "nvarchar(48)")]
+        [Column(TypeName = "varchar(48)")]
         public string SaltKey { get; set; }
 
         [Required]
