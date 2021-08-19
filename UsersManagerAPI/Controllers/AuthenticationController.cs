@@ -42,7 +42,7 @@ namespace UsersManagerAPI.Controllers
             }
             else
             {
-                ModelState.AddModelError("Failed", "Failed to sign up");
+                ModelState.AddModelError("Failed", UserInfo.Message + " - " + UserInfo.DetailedMessage);
                 return Ok(ModelState); 
             }
         }
@@ -63,7 +63,7 @@ namespace UsersManagerAPI.Controllers
             }
             else
             {
-                ModelState.AddModelError("Unauthorized", "Unauthorized access");
+                ModelState.AddModelError("Unauthorized", UserInfo.Message + " - " + UserInfo.DetailedMessage);
                 return Unauthorized(ModelState);
             }
         }

@@ -27,34 +27,33 @@ namespace UsersManagerAPI.Services
             this.ConfirmMail = ConfirmMail;
         }
 
-        async public Task<IUserInfo> SignUp(IUserInfo RegisterInfo)
+        async public Task<IUserInfo> SignUp(IUserInfo userInfo)
         {
-            int length;
             try
             {
-                if (!string.IsNullOrEmpty(RegisterInfo.Email))
+                if (!string.IsNullOrEmpty(userInfo.Email))
                 {
                     String rndSaltKey = SaltKey.GetSalt(24);
-                    RegisterInfo.CreatedDate = DateTime.Now;
-                    RegisterInfo.UpdatedDate = DateTime.Now;
-                    RegisterInfo.AccountPricingPlan = "Free";
-                    RegisterInfo.AccountType = "Lone_Wolf";
-                    RegisterInfo.SaltKey = rndSaltKey;
-                    length = rndSaltKey.Length;
-                    RegisterInfo.IsMailConfirmed = false;
-                    RegisterInfo.HashPassword = Hashingservices.ComputeSha256Hash(rndSaltKey + RegisterInfo.Password);
-                    length = RegisterInfo.HashPassword.Length;
-                    RegisterInfo = await UsersCURD.AddUserAsync(RegisterInfo);
-                    await ConfirmMail.ConfirmEmail(RegisterInfo);
-                    RegisterInfo.Message = Message.Success;
+                    userInfo.CreatedDate = DateTime.Now;
+                    userInfo.UpdatedDate = DateTime.Now;
+                    userInfo.AccountPricingPlan = "Free";
+                    userInfo.AccountType = "Lone_Wolf";
+                    userInfo.SaltKey = rndSaltKey;
+                    userInfo.IsMailConfirmed = false;
+                    userInfo.HashPassword = Hashingservices.ComputeSha256Hash(rndSaltKey + userInfo.Password);
+                    userInfo = await UsersCURD.AddUserAsync(userInfo);
+                    if (userInfo.Message == Message.Success)
+                    {
+                        userInfo = await ConfirmMail.ConfirmEmail(userInfo);
+                    }
                 }
             }
             catch
             {
-                RegisterInfo.Message = Message.ErrorFound;
-                RegisterInfo.DetailedMessage = RegisterInfo.DetailedMessage + "\nError in SignUp method in RegisterUser Class";
+                userInfo.Message = Message.ErrorFound;
+                userInfo.DetailedMessage = userInfo.DetailedMessage + " - Error in SignUp method in RegisterUser Class";
             }
-            return RegisterInfo;
+            return userInfo;
         }
     }
 }

@@ -24,7 +24,7 @@ namespace UsersManagerAPI.Services
 
             if (userInfo.Message==Message.ErrorFound)
             {
-                userInfo.DetailedMessage = userInfo.DetailedMessage + "\nError in ConfirmEmail method in ConfirmMail Class";
+                userInfo.DetailedMessage = userInfo.DetailedMessage + " - Error in ConfirmEmail method in ConfirmMail Class";
             }
 
             return userInfo;
