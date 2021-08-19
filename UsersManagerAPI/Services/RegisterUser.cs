@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using UsersManagerAPI.DataAccess.IDataAccess;
 using UsersManagerAPI.DomainClasses.Common;
 using UsersManagerAPI.DomainClasses.Models;
+using UsersManagerAPI.DomainClasses.Models.IModels;
 using UsersManagerAPI.IServices;
 using UsersManagerAPI.SecurityServices;
 
@@ -13,17 +14,16 @@ namespace UsersManagerAPI.Services
         private IUsersCRUD UsersCURD { get; set; }
         Hashing Hashingservices;
         SaltKey SaltKey;
-        UserInfo userInfo;
 
-        public RegisterUser(IUsersCRUD usersCURD)
-        {
-            userInfo = new UserInfo();
+        public RegisterUser(
+            IUsersCRUD usersCURD)
+        {          
             SaltKey = new SaltKey();
             Hashingservices = new Hashing();
             UsersCURD = usersCURD;
         }
 
-        async public Task<UserInfo> SignUp(UserInfo RegisterInfo)
+        async public Task<IUserInfo> SignUp(IUserInfo RegisterInfo)
         {
             try
             {
@@ -37,15 +37,15 @@ namespace UsersManagerAPI.Services
                     RegisterInfo.SaltKey = rndSaltKey;
                     RegisterInfo.IsMailConfirmed = false;
                     RegisterInfo.HashPassword = Hashingservices.ComputeSha256Hash(rndSaltKey + RegisterInfo.Password);
-                    userInfo = await UsersCURD.AddUserAsync(RegisterInfo);  
+                    RegisterInfo = await UsersCURD.AddUserAsync(RegisterInfo);  
                 }
             }
             catch
             {
-                userInfo.Message = Message.ErrorFound;
-                userInfo.DetailedMessage = "Error in SignUp method in RegisterUser Class";
+                RegisterInfo.Message = Message.ErrorFound;
+                RegisterInfo.DetailedMessage = "Error in SignUp method in RegisterUser Class";
             }
-            return userInfo;
+            return RegisterInfo;
         }
     }
 }

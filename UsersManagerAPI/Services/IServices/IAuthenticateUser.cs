@@ -1,9 +1,10 @@
 ﻿using UsersManagerAPI.DomainClasses.Models;
+using UsersManagerAPI.DomainClasses.Models.IModels;
 
 namespace UsersManagerAPI.IServices
 {
     public interface IAuthenticateUser
     {
-        UserInfo AuthenticateAsync(string UserName, string Password);
+        IUserInfo AuthenticateAsync(IUserInfo userInfo);
     }
 }

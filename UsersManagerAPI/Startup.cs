@@ -11,6 +11,8 @@ using System.Text;
 using UsersManagerAPI.DataAccess;
 using UsersManagerAPI.DataAccess.IDataAccess;
 using UsersManagerAPI.DomainClasses.Common;
+using UsersManagerAPI.DomainClasses.Models;
+using UsersManagerAPI.DomainClasses.Models.IModels;
 using UsersManagerAPI.IServices;
 using UsersManagerAPI.Services;
 
@@ -29,11 +31,16 @@ namespace UsersManagerAPI
         {
             Global.ConnectionString = Configuration.GetConnectionString("UserDB");
             Global.DomainName = Configuration["DomainName"];
+
+            #region DI Section
             services.AddDbContextPool<UsersBDContext>(option => option.UseSqlServer(Configuration.GetConnectionString("UserDB")));
             services.AddTransient<ITokensGenerator, TokensGenerator>();
             services.AddTransient<IAuthenticateUser, AuthenticateUser>();
             services.AddTransient<IUsersCRUD , UsersCRUD>();
             services.AddTransient<IRegisterUser, RegisterUser>();
+            services.AddTransient<IUserInfo, UserInfo>();
+            #endregion
+
             services.AddControllers();
             services.AddAuthentication(o =>
             {

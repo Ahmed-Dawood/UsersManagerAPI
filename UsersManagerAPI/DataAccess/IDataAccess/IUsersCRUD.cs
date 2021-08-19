@@ -1,16 +1,17 @@
 ﻿using System.Threading.Tasks;
 using UsersManagerAPI.DomainClasses.Models;
+using UsersManagerAPI.DomainClasses.Models.IModels;
 
 namespace UsersManagerAPI.DataAccess.IDataAccess
 {
     public interface IUsersCRUD
     {
-        UserInfo GetUser(string userEmail);
+        IUserInfo GetUser(IUserInfo userInfo);
 
-        Task<UserInfo> AddUserAsync(UserInfo userInfo);
+        Task<IUserInfo> AddUserAsync(IUserInfo userInfo);
 
-        Task<UserInfo> DeleteUser(string userEmail);
+        Task<IUserInfo> DeleteUser(IUserInfo userInfo);
 
-        Task<UserInfo> UpdateUser(UserInfo userInfo);
+        Task<IUserInfo> UpdateUser(IUserInfo userInfo);
     }
 }

@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using UsersManagerAPI.DomainClasses.Models;
+using UsersManagerAPI.DomainClasses.Models.IModels;
 using UsersManagerAPI.IServices;
 
 namespace UsersManagerAPI.Services
@@ -21,7 +22,7 @@ namespace UsersManagerAPI.Services
             secretKey = Encoding.ASCII.GetBytes(key);
         }
 
-        async public Task<string> NewTokenAsync(UserInfo UserInfo)
+        async public Task<string> NewTokenAsync(IUserInfo UserInfo)
         {
             var tokenDescriptor = new SecurityTokenDescriptor
             {

@@ -4,6 +4,7 @@ using UsersManagerAPI.DomainClasses.Common;
 using UsersManagerAPI.DomainClasses.Models;
 using UsersManagerAPI.IServices;
 using System.Text.Json;
+using UsersManagerAPI.DomainClasses.Models.IModels;
 
 namespace UsersManagerAPI.Controllers
 {
@@ -15,24 +16,27 @@ namespace UsersManagerAPI.Controllers
         private readonly ITokensGenerator TokensGenerator;
         private readonly IAuthenticateUser AuthenticateUser;
         private readonly IRegisterUser RegisterUser;
+        private IUserInfo UserInfo;
         #endregion
 
         public AuthenticationController(
             ITokensGenerator TokensGenerator,
             IAuthenticateUser AuthenticateUser,
-            IRegisterUser RegisterUser)
+            IRegisterUser RegisterUser,
+            IUserInfo UserInfo)
         {
             this.TokensGenerator = TokensGenerator;
             this.AuthenticateUser = AuthenticateUser;
             this.RegisterUser = RegisterUser;
+            this.UserInfo = UserInfo;
         }
         [HttpPost("SignUp")]
         async public Task<IActionResult> Register([FromBody] RegisterInfo userRegisterInfo)
         {
             var serializedParent = JsonSerializer.Serialize(userRegisterInfo);
-            UserInfo userInfo = JsonSerializer.Deserialize<UserInfo>(serializedParent);
-            userInfo = await RegisterUser.SignUp(userInfo);
-            if(userInfo.Message == Message.Success)
+            UserInfo = JsonSerializer.Deserialize<UserInfo>(serializedParent);
+            UserInfo = await RegisterUser.SignUp(UserInfo);
+            if(UserInfo.Message == Message.Success)
             {
                 return Ok(Message.Success);
             }
@@ -44,8 +48,10 @@ namespace UsersManagerAPI.Controllers
         }
         [HttpGet("Authenticate")]
         async public Task<IActionResult> Authenticate([FromBody]LoginInfo loginInfo)
-        {          
-            UserInfo UserInfo = AuthenticateUser.AuthenticateAsync(loginInfo.UserName, loginInfo.Password);
+        {
+            var serializedParent = JsonSerializer.Serialize(loginInfo);
+            UserInfo = JsonSerializer.Deserialize<IUserInfo>(serializedParent);
+            UserInfo = AuthenticateUser.AuthenticateAsync(UserInfo);
             if (UserInfo.Message == Message.Success)
             {
                 return Ok(new

@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
-using UsersManagerAPI.DomainClasses.Models;
+using UsersManagerAPI.DomainClasses.Models.IModels;
 
 namespace UsersManagerAPI.IServices
 {
     public interface IRegisterUser
     {
-        Task<UserInfo> SignUp(UserInfo RegisterInfo);
+        Task<IUserInfo> SignUp(IUserInfo RegisterInfo);
     }
 }

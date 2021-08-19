@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using UsersManagerAPI.DataAccess.IDataAccess;
 using UsersManagerAPI.DomainClasses.Common;
 using UsersManagerAPI.DomainClasses.Models;
+using UsersManagerAPI.DomainClasses.Models.IModels;
 
 namespace UsersManagerAPI.DataAccess
 {
@@ -16,13 +17,12 @@ namespace UsersManagerAPI.DataAccess
             UsersBD = usersBD;
         }        
 
-        public UserInfo GetUser(string userName)
+        public IUserInfo GetUser(IUserInfo userinfo)
         {
-            UserInfo userinfo = new UserInfo();
             try
             {
                 userinfo = UsersBD.Users
-                    .Where(u => u.UserName == userName)                  
+                    .Where(u => u.UserName == userinfo.UserName)                  
                     .First();
                 userinfo.Message = Message.Success;
             }
@@ -34,7 +34,7 @@ namespace UsersManagerAPI.DataAccess
             return userinfo;
         }
 
-        async public Task<UserInfo> AddUserAsync(UserInfo userInfo)
+        async public Task<IUserInfo> AddUserAsync(IUserInfo userInfo)
         {
             try
             {
@@ -58,12 +58,11 @@ namespace UsersManagerAPI.DataAccess
             return userInfo;
         }
 
-        async public Task<UserInfo> DeleteUser(string userName)
+        async public Task<IUserInfo> DeleteUser(IUserInfo userInfo)
         {
-            UserInfo userInfo = new UserInfo();
             try
             {
-                var userinfo = UsersBD.Users.Where(u => u.UserName == userName).FirstOrDefault();
+                var userinfo = UsersBD.Users.Where(u => u.UserName == userInfo.UserName).FirstOrDefault();
                 userinfo.IsDeleted = true;
                 await UsersBD.SaveChangesAsync();
                 userinfo.Message = Message.UserRemoved;
@@ -76,7 +75,7 @@ namespace UsersManagerAPI.DataAccess
             return userInfo;
         }
 
-        async public Task<UserInfo> UpdateUser(UserInfo userInfo)
+        async public Task<IUserInfo> UpdateUser(IUserInfo userInfo)
         {
             try
             {
