@@ -118,6 +118,12 @@ namespace UsersManagerAPI.Migrations
 
                     b.HasIndex("CompanyInfoCompanyId");
 
+                    b.HasIndex(new[] { "Email" }, "IX_Users_Email")
+                        .IsUnique();
+
+                    b.HasIndex(new[] { "UserName" }, "IX_Users_UserName")
+                        .IsUnique();
+
                     b.ToTable("Users");
                 });
 

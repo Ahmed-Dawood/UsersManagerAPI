@@ -10,8 +10,8 @@ using UsersManagerAPI.DataAccess;
 namespace UsersManagerAPI.Migrations
 {
     [DbContext(typeof(UsersBDContext))]
-    [Migration("20210819134514_SetLengthForHashPass")]
-    partial class SetLengthForHashPass
+    [Migration("20210819144406_CreateUsersDB")]
+    partial class CreateUsersDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -119,6 +119,12 @@ namespace UsersManagerAPI.Migrations
                     b.HasKey("UserId");
 
                     b.HasIndex("CompanyInfoCompanyId");
+
+                    b.HasIndex(new[] { "Email" }, "IX_Users_Email")
+                        .IsUnique();
+
+                    b.HasIndex(new[] { "UserName" }, "IX_Users_UserName")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });

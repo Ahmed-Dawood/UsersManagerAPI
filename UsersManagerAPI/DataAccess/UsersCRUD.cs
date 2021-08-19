@@ -38,16 +38,28 @@ namespace UsersManagerAPI.DataAccess
         {
             try
             {
-                try
+                var userinfo = UsersBD.Users.Where(u => u.UserName == userInfo.UserName).FirstOrDefault();
+                if (userinfo == null)
                 {
-                    var userinfo = UsersBD.Users.Where(u => u.UserName == userInfo.UserName).First();
-                    userInfo.Message = Message.UserAlreadyExist;
+                    userinfo = UsersBD.Users.Where(u => u.Email == userInfo.Email).FirstOrDefault();
+                    if (userinfo == null)
+                    {
+                        await UsersBD.Users.AddAsync((UserInfo)userInfo);
+                        await UsersBD.SaveChangesAsync();
+                        userInfo.Message = Message.Success;
+                    }
+                    else
+                    {
+                        userInfo.Message = Message.DuplicateEmail;
+                    }
                 }
-                catch
+                else if (userInfo.IsDeleted == true)
                 {
-                    await UsersBD.Users.AddAsync((UserInfo)userInfo);
-                    await UsersBD.SaveChangesAsync();
-                    userInfo.Message = Message.Success;
+                    await UpdateUser(userinfo);
+                }
+                else
+                {
+                    userInfo.Message = Message.UserAlreadyExist;
                 }                
             }
             catch
@@ -63,9 +75,17 @@ namespace UsersManagerAPI.DataAccess
             try
             {
                 var userinfo = UsersBD.Users.Where(u => u.UserName == userInfo.UserName).FirstOrDefault();
-                userinfo.IsDeleted = true;
-                await UsersBD.SaveChangesAsync();
-                userinfo.Message = Message.UserRemoved;
+                if (userinfo == null)
+                {
+                    userinfo.Message = Message.InvalidUser;
+                }
+                else
+                {
+                    userinfo.IsDeleted = true;
+                    userinfo.UpdatedDate = DateTime.Now;
+                    await UsersBD.SaveChangesAsync();
+                    userinfo.Message = Message.UserRemoved;
+                }
             }
             catch
             {
@@ -80,18 +100,25 @@ namespace UsersManagerAPI.DataAccess
             try
             {
                 var userinfo = UsersBD.Users.Where(u => u.UserName == userInfo.UserName).FirstOrDefault();
-                userinfo.FirstName = userInfo.FirstName;
-                userinfo.LastName = userInfo.LastName;    
-                userinfo.Email = userInfo.Email;
-                userinfo.HashPassword = userInfo.HashPassword;
-                userinfo.SaltKey = userInfo.SaltKey;
-                userinfo.IsMailConfirmed = userInfo.IsMailConfirmed;
-                userinfo.Role = userInfo.Role;
-                userinfo.AccountType = userInfo.AccountType;
-                userinfo.AccountPricingPlan = userInfo.AccountPricingPlan;
-                userinfo.UpdatedDate = userInfo.UpdatedDate;
-                await UsersBD.SaveChangesAsync();
-                userinfo.Message = Message.Success;
+                if (userinfo == null)
+                {
+                    userinfo.Message = Message.InvalidUser;
+                }
+                else
+                {
+                    userinfo.FirstName = userInfo.FirstName;
+                    userinfo.LastName = userInfo.LastName;
+                    userinfo.Email = userInfo.Email;
+                    userinfo.HashPassword = userInfo.HashPassword;
+                    userinfo.SaltKey = userInfo.SaltKey;
+                    userinfo.IsMailConfirmed = userInfo.IsMailConfirmed;
+                    userinfo.Role = userInfo.Role;
+                    userinfo.AccountType = userInfo.AccountType;
+                    userinfo.AccountPricingPlan = userInfo.AccountPricingPlan;
+                    userinfo.UpdatedDate = DateTime.Now;
+                    await UsersBD.SaveChangesAsync();
+                    userinfo.Message = Message.Success;
+                }
             }
             catch
             {

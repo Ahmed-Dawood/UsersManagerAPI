@@ -40,11 +40,16 @@ namespace UsersManagerAPI.Services
                     userInfo.AccountType = "Lone_Wolf";
                     userInfo.SaltKey = rndSaltKey;
                     userInfo.IsMailConfirmed = false;
+                    userInfo.IsDeleted = false;
                     userInfo.HashPassword = Hashingservices.ComputeSha256Hash(rndSaltKey + userInfo.Password);
                     userInfo = await UsersCURD.AddUserAsync(userInfo);
                     if (userInfo.Message == Message.Success)
                     {
                         userInfo = await ConfirmMail.ConfirmEmail(userInfo);
+                    }
+                    else if (userInfo.Message == Message.UserAlreadyExist && userInfo.IsMailConfirmed == false)
+                    {
+                        userInfo.Message = Message.VerifyMailRegister;
                     }
                 }
             }

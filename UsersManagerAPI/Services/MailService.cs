@@ -13,7 +13,7 @@ namespace UsersManagerAPI.Services
     {
         public string GetMailBody(IUserInfo userInfo)
         {
-            string url = Global.DomainName + "api/Authentication/ConfirmMail?username=\"" + userInfo.UserName + "\"";
+            string url = Global.DomainName + "api/Authentication/ConfirmMail?username=" + userInfo.UserName + "";
 
             return string.Format(@"<div style='text-align:center;'>
                                     <h1>Hello {0} {1}.</h1>
@@ -61,7 +61,7 @@ namespace UsersManagerAPI.Services
                         smtp.Credentials = new NetworkCredential(mailClass.FromMailId, mailClass.FromMailPassword);
                         smtp.EnableSsl = true;
                         await smtp.SendMailAsync(mail);
-                        return Message.MailSent;
+                        return Message.Success;
                     }
                 }
             }
