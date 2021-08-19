@@ -44,6 +44,7 @@ namespace UsersManagerAPI.DomainClasses.Models
         public string HashPassword { get; set; }
 
         [Required]
+        [Column(TypeName = "nvarchar(48)")]
         public string SaltKey { get; set; }
 
         [Required]
