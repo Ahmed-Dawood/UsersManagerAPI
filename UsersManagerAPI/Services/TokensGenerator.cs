@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using UsersManagerAPI.DomainClasses.Common;
 using UsersManagerAPI.DomainClasses.Models;
 using UsersManagerAPI.DomainClasses.Models.IModels;
 using UsersManagerAPI.IServices;
@@ -14,7 +15,7 @@ namespace UsersManagerAPI.Services
     {
         private JwtSecurityTokenHandler tokenHandler;
         private byte[] secretKey;
-        private string key = "A345rbde&3yd(@%$Nckeoc-e9vjv97c9"; //your 32 char secret key like what is written
+        private string key = Global.JWTKey;
 
         public TokensGenerator()
         {

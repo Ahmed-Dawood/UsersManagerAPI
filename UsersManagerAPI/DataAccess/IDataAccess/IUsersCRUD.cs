@@ -6,12 +6,12 @@ namespace UsersManagerAPI.DataAccess.IDataAccess
 {
     public interface IUsersCRUD
     {
-        IUserInfo GetUser(IUserInfo userInfo);
+        Task<IUserInfo> GetUserAsync(IUserInfo userInfo);
 
         Task<IUserInfo> AddUserAsync(IUserInfo userInfo);
 
-        Task<IUserInfo> DeleteUser(IUserInfo userInfo);
+        Task<IUserInfo> DeleteUserAsync(IUserInfo userInfo);
 
-        Task<IUserInfo> UpdateUser(IUserInfo userInfo);
+        Task<IUserInfo> UpdateUserAsync(IUserInfo userInfo);
     }
 }

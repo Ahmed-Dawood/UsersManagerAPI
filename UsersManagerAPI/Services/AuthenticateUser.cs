@@ -1,4 +1,5 @@
-﻿using UsersManagerAPI.DataAccess.IDataAccess;
+﻿using System.Threading.Tasks;
+using UsersManagerAPI.DataAccess.IDataAccess;
 using UsersManagerAPI.DomainClasses.Common;
 using UsersManagerAPI.DomainClasses.Models;
 using UsersManagerAPI.DomainClasses.Models.IModels;
@@ -17,14 +18,14 @@ namespace UsersManagerAPI.Services
             UsersCRUD = usersCRUD;
         }
 
-        public IUserInfo AuthenticateAsync(IUserInfo userInfo)
+        async public Task<IUserInfo> AuthenticateAsync(IUserInfo userInfo)
         {
             
             if (!string.IsNullOrWhiteSpace(userInfo.UserName) &&
                !string.IsNullOrWhiteSpace(userInfo.Password))
             {
                 string Password = userInfo.Password;
-                userInfo = UsersCRUD.GetUser(userInfo);
+                userInfo = await UsersCRUD.GetUserAsync(userInfo);
                 if (userInfo.IsMailConfirmed == true && userInfo.IsDeleted == false)
                 {
                     string HashedPassword = HashingService.ComputeSha256Hash(userInfo.SaltKey + Password);

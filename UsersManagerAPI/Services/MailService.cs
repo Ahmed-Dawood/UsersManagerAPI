@@ -13,7 +13,7 @@ namespace UsersManagerAPI.Services
     {
         public string GetMailBody(IUserInfo userInfo)
         {
-            string url = Global.DomainName + "api/Authentication/ConfirmMail?username=" + userInfo.UserName + "";
+            string url = Global.DomainName + "api/Authentication/ConfirmMail?username=" + userInfo.UserName + "&password=" + userInfo.HashPassword;
 
             return string.Format(@"<div style='text-align:center;'>
                                     <h1>Hello {0} {1}.</h1>

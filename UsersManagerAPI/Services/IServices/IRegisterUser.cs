@@ -5,6 +5,6 @@ namespace UsersManagerAPI.IServices
 {
     public interface IRegisterUser
     {
-        Task<IUserInfo> SignUp(IUserInfo RegisterInfo);
+        Task<IUserInfo> SignUpAsync(IUserInfo RegisterInfo);
     }
 }

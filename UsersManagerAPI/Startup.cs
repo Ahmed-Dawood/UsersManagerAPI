@@ -30,8 +30,11 @@ namespace UsersManagerAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
+            #region Global Variables
             Global.ConnectionString = Configuration.GetConnectionString("UserDB");
             Global.DomainName = Configuration["DomainName"];
+            Global.JWTKey = Configuration["JWTKey"];
+            #endregion
 
             #region DI Section
             services.AddDbContextPool<UsersBDContext>(option => option.UseSqlServer(Configuration.GetConnectionString("UserDB")));
@@ -44,6 +47,8 @@ namespace UsersManagerAPI
             #endregion
 
             services.AddControllers();
+
+            #region Authentication & Autherization
             services.AddAuthentication(o =>
             {
                 o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -53,13 +58,14 @@ namespace UsersManagerAPI
                 o.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("A345rbde&3yd(@%$Nckeoc-e9vjv97c9")),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Global.JWTKey)),
                     ValidateLifetime = true,
                     ValidateAudience = false,
                     ValidateIssuer = false,
                     ClockSkew = TimeSpan.Zero
                 };
             });
+            #endregion
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

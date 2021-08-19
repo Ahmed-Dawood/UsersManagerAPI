@@ -1,10 +1,10 @@
-﻿using UsersManagerAPI.DomainClasses.Models;
+﻿using System.Threading.Tasks;
 using UsersManagerAPI.DomainClasses.Models.IModels;
 
 namespace UsersManagerAPI.IServices
 {
     public interface IAuthenticateUser
     {
-        IUserInfo AuthenticateAsync(IUserInfo userInfo);
+        Task<IUserInfo> AuthenticateAsync(IUserInfo userInfo);
     }
 }

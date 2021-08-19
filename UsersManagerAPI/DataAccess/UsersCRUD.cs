@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using UsersManagerAPI.DataAccess.IDataAccess;
@@ -17,16 +18,15 @@ namespace UsersManagerAPI.DataAccess
             UsersBD = usersBD;
         }        
 
-        public IUserInfo GetUser(IUserInfo userinfo)
+        async public Task<IUserInfo> GetUserAsync(IUserInfo userinfo)
         {
-            try
+            userinfo = await UsersBD.Users
+                .FirstOrDefaultAsync(u => u.UserName == userinfo.UserName);
+            if (userinfo != null)
             {
-                userinfo = UsersBD.Users
-                    .Where(u => u.UserName == userinfo.UserName)                  
-                    .First();
                 userinfo.Message = Message.Success;
             }
-            catch
+            else
             {
                 userinfo.Message = Message.ErrorFound;
                 userinfo.DetailedMessage = userinfo.DetailedMessage + " - Error in GetUser method in UsersCRUD class";
@@ -38,10 +38,10 @@ namespace UsersManagerAPI.DataAccess
         {
             try
             {
-                var userinfo = UsersBD.Users.Where(u => u.UserName == userInfo.UserName).FirstOrDefault();
+                var userinfo = await UsersBD.Users.FirstOrDefaultAsync(u => u.UserName == userInfo.UserName);
                 if (userinfo == null)
                 {
-                    userinfo = UsersBD.Users.Where(u => u.Email == userInfo.Email).FirstOrDefault();
+                    userinfo = await UsersBD.Users.FirstOrDefaultAsync(u => u.Email == userInfo.Email);
                     if (userinfo == null)
                     {
                         await UsersBD.Users.AddAsync((UserInfo)userInfo);
@@ -55,7 +55,7 @@ namespace UsersManagerAPI.DataAccess
                 }
                 else if (userInfo.IsDeleted == true)
                 {
-                    await UpdateUser(userinfo);
+                    await UpdateUserAsync(userinfo);
                 }
                 else
                 {
@@ -70,11 +70,11 @@ namespace UsersManagerAPI.DataAccess
             return userInfo;
         }
 
-        async public Task<IUserInfo> DeleteUser(IUserInfo userInfo)
+        async public Task<IUserInfo> DeleteUserAsync(IUserInfo userInfo)
         {
             try
             {
-                var userinfo = UsersBD.Users.Where(u => u.UserName == userInfo.UserName).FirstOrDefault();
+                var userinfo = await UsersBD .Users.FirstOrDefaultAsync(u => u.UserName == userInfo.UserName);
                 if (userinfo == null)
                 {
                     userinfo.Message = Message.InvalidUser;
@@ -95,11 +95,11 @@ namespace UsersManagerAPI.DataAccess
             return userInfo;
         }
 
-        async public Task<IUserInfo> UpdateUser(IUserInfo userInfo)
+        async public Task<IUserInfo> UpdateUserAsync(IUserInfo userInfo)
         {
             try
             {
-                var userinfo = UsersBD.Users.Where(u => u.UserName == userInfo.UserName).FirstOrDefault();
+                var userinfo = await UsersBD .Users.FirstOrDefaultAsync(u => u.UserName == userInfo.UserName);
                 if (userinfo == null)
                 {
                     userinfo.Message = Message.InvalidUser;

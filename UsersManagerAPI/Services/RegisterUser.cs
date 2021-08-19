@@ -27,7 +27,7 @@ namespace UsersManagerAPI.Services
             this.ConfirmMail = ConfirmMail;
         }
 
-        async public Task<IUserInfo> SignUp(IUserInfo userInfo)
+        async public Task<IUserInfo> SignUpAsync(IUserInfo userInfo)
         {
             try
             {
