@@ -6,6 +6,8 @@ using UsersManagerAPI.IServices;
 using System.Text.Json;
 using UsersManagerAPI.DomainClasses.Models.IModels;
 using Microsoft.AspNetCore.Authorization;
+using UsersManagerAPI.DataAccess.IDataAccess;
+using UsersManagerAPI.Services.IServices;
 
 namespace UsersManagerAPI.Controllers
 {
@@ -18,21 +20,29 @@ namespace UsersManagerAPI.Controllers
         private readonly IAuthenticateUser AuthenticateUser;
         private readonly IRegisterUser RegisterUser;
         private IUserInfo UserInfo;
+        private readonly IConfirmMail confirmMail;
         #endregion
 
+        #region constructor
         public AuthenticationController(
             ITokensGenerator TokensGenerator,
             IAuthenticateUser AuthenticateUser,
             IRegisterUser RegisterUser,
+            IConfirmMail confirmMail,
             IUserInfo UserInfo)
         {
             this.TokensGenerator = TokensGenerator;
             this.AuthenticateUser = AuthenticateUser;
             this.RegisterUser = RegisterUser;
             this.UserInfo = UserInfo;
+            this.confirmMail = confirmMail;
         }
+        #endregion
+
+        #region EndPoints
+        [AllowAnonymous]
         [HttpPost("SignUp")]
-        async public Task<IActionResult> Register([FromBody] RegisterInfo userRegisterInfo)
+        async public Task<IActionResult> Register([FromBody]RegisterInfo userRegisterInfo)
         {
             var serializedParent = JsonSerializer.Serialize(userRegisterInfo);
             UserInfo = JsonSerializer.Deserialize<UserInfo>(serializedParent);
@@ -46,10 +56,11 @@ namespace UsersManagerAPI.Controllers
             }
             else
             {
-                ModelState.AddModelError("Failed", UserInfo.Message + " - " + UserInfo.DetailedMessage);
-                return Ok(ModelState); 
+                return BadRequest(UserInfo.Message + " - " + UserInfo.DetailedMessage);
             }
         }
+
+        [AllowAnonymous]
         [HttpGet("Authenticate")]
         async public Task<IActionResult> Authenticate([FromBody]LoginInfo loginInfo)
         {
@@ -67,21 +78,26 @@ namespace UsersManagerAPI.Controllers
             }
             else
             {
-                ModelState.AddModelError("Unauthorized", UserInfo.Message + " - " + UserInfo.DetailedMessage);
-                return Unauthorized(ModelState);
+                return BadRequest(UserInfo.Message + " - " + UserInfo.DetailedMessage);
             }
         }
-        [HttpGet("ConfirmMail")]
-        [Authorize]
-        async public Task<IActionResult> ConfirmMail([FromQuery] string username)
+
+        [HttpPost("ConfirmMail")]
+        async public Task<IActionResult> ConfirmMail([FromQuery]string username)
         {
             var serializedParent = JsonSerializer.Serialize(username);
             UserInfo = JsonSerializer.Deserialize<UserInfo>(serializedParent);
-            UserInfo.IsMailConfirmed = true;
-            return Ok(new
-            {                
-                UserName = username
-            });
+            UserInfo = await confirmMail.UpdateConfirmMailAsync(UserInfo);
+            if (UserInfo.Message == Message.Success)
+            {
+                return Ok(Message.Success);
+            }
+            else
+            {
+                return BadRequest(UserInfo.Message);
+            }
         }
+        
+        #endregion
     }
 }

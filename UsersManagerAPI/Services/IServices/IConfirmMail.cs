@@ -5,6 +5,8 @@ namespace UsersManagerAPI.Services.IServices
 {
     public interface IConfirmMail
     {
-        Task<IUserInfo> ConfirmEmail(IUserInfo userInfo);
+        Task<IUserInfo> SendConfirmEmailAsync(IUserInfo userInfo);
+
+        Task<IUserInfo> UpdateConfirmMailAsync(IUserInfo userInfo);
     }
 }

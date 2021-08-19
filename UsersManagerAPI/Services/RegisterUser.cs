@@ -45,7 +45,7 @@ namespace UsersManagerAPI.Services
                     userInfo = await UsersCURD.AddUserAsync(userInfo);
                     if (userInfo.Message == Message.Success)
                     {
-                        userInfo = await ConfirmMail.ConfirmEmail(userInfo);
+                        userInfo = await ConfirmMail.SendConfirmEmailAsync(userInfo);
                     }
                     else if (userInfo.Message == Message.UserAlreadyExist && userInfo.IsMailConfirmed == false)
                     {

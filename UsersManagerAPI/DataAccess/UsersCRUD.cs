@@ -55,7 +55,7 @@ namespace UsersManagerAPI.DataAccess
                 }
                 else if (userInfo.IsDeleted == true)
                 {
-                    await UpdateUserAsync(userinfo);
+                    await UpdateUserAsync(userInfo);
                 }
                 else
                 {
@@ -74,17 +74,17 @@ namespace UsersManagerAPI.DataAccess
         {
             try
             {
-                var userinfo = await UsersBD .Users.FirstOrDefaultAsync(u => u.UserName == userInfo.UserName);
+                var userinfo = await UsersBD.Users.FirstOrDefaultAsync(u => u.UserName == userInfo.UserName);
                 if (userinfo == null)
                 {
-                    userinfo.Message = Message.InvalidUser;
+                    userInfo.Message = Message.InvalidUser;
                 }
                 else
                 {
                     userinfo.IsDeleted = true;
                     userinfo.UpdatedDate = DateTime.Now;
                     await UsersBD.SaveChangesAsync();
-                    userinfo.Message = Message.UserRemoved;
+                    userInfo.Message = Message.Success;
                 }
             }
             catch
@@ -95,14 +95,14 @@ namespace UsersManagerAPI.DataAccess
             return userInfo;
         }
 
-        async public Task<IUserInfo> UpdateUserAsync(IUserInfo userInfo)
+        async public Task<IUserInfo> UpdateUserAsync(IUserInfo userInfo)    
         {
             try
             {
-                var userinfo = await UsersBD .Users.FirstOrDefaultAsync(u => u.UserName == userInfo.UserName);
+                var userinfo = await UsersBD.Users.FirstOrDefaultAsync(u => u.UserName == userInfo.UserName);
                 if (userinfo == null)
                 {
-                    userinfo.Message = Message.InvalidUser;
+                    userInfo.Message = Message.InvalidUser;
                 }
                 else
                 {
@@ -117,7 +117,7 @@ namespace UsersManagerAPI.DataAccess
                     userinfo.AccountPricingPlan = userInfo.AccountPricingPlan;
                     userinfo.UpdatedDate = DateTime.Now;
                     await UsersBD.SaveChangesAsync();
-                    userinfo.Message = Message.Success;
+                    userInfo.Message = Message.Success;
                 }
             }
             catch
