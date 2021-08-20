@@ -8,6 +8,7 @@ using UsersManagerAPI.DomainClasses.Models.IModels;
 using Microsoft.AspNetCore.Authorization;
 using UsersManagerAPI.DataAccess.IDataAccess;
 using UsersManagerAPI.Services.IServices;
+using UsersManagerAPI.SecurityServices;
 
 namespace UsersManagerAPI.Controllers
 {
@@ -20,6 +21,7 @@ namespace UsersManagerAPI.Controllers
         private readonly IAuthenticateUser AuthenticateUser;
         private readonly IRegisterUser RegisterUser;
         private IUserInfo UserInfo;
+        private IUsersCRUD UsersCURD;
         private readonly IConfirmMail confirmMail;
         #endregion
 
@@ -29,13 +31,15 @@ namespace UsersManagerAPI.Controllers
             IAuthenticateUser AuthenticateUser,
             IRegisterUser RegisterUser,
             IConfirmMail confirmMail,
-            IUserInfo UserInfo)
+            IUserInfo UserInfo,
+            IUsersCRUD UsersCURD)
         {
             this.TokensGenerator = TokensGenerator;
             this.AuthenticateUser = AuthenticateUser;
             this.RegisterUser = RegisterUser;
             this.UserInfo = UserInfo;
             this.confirmMail = confirmMail;
+            this.UsersCURD = UsersCURD;
         }
         #endregion
 
@@ -97,7 +101,32 @@ namespace UsersManagerAPI.Controllers
                 return BadRequest(UserInfo.Message);
             }
         }
-        
+
+        [HttpPost("ResetPassword")]
+        async public Task<IActionResult> ChangePassword([FromBody]ResetPasswordInfo ResetInfo)
+        {
+            UserInfo.UserName = ResetInfo.UserName;
+            UserInfo.Password = ResetInfo.OldPassword;
+            UserInfo = await AuthenticateUser.AuthenticateAsync(UserInfo);
+            if (UserInfo.Message == Message.Success)
+            {
+                Hashing Hashingservices = new Hashing();
+                UserInfo.HashPassword = Hashingservices.ComputeSha256Hash(UserInfo.SaltKey + ResetInfo.NewPassword);
+                UserInfo = await UsersCURD.UpdateUserAsync(UserInfo);
+                if (UserInfo.Message == Message.Success)
+                {
+                    return Ok(Message.Success);
+                }
+                else
+                {
+                    return BadRequest(UserInfo.Message);
+                }
+            }            
+            else
+            {
+                return BadRequest(UserInfo.Message);
+            }
+        }
         #endregion
     }
 }
