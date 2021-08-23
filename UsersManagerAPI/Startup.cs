@@ -44,6 +44,7 @@ namespace UsersManagerAPI
             services.AddTransient<IRegisterUser, RegisterUser>();
             services.AddTransient<IUserInfo, UserInfo>();
             services.AddTransient<IConfirmMail, ConfirmMail>();
+            services.AddTransient<IMailService, MailService>();
             #endregion
 
             services.AddControllers();

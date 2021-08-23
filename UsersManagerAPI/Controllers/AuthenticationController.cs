@@ -89,8 +89,7 @@ namespace UsersManagerAPI.Controllers
         [HttpPost("ConfirmMail")]
         async public Task<IActionResult> ConfirmMail([FromQuery]string username)
         {
-            var serializedParent = JsonSerializer.Serialize(username);
-            UserInfo = JsonSerializer.Deserialize<UserInfo>(serializedParent);
+            UserInfo.UserName = username;
             UserInfo = await confirmMail.UpdateConfirmMailAsync(UserInfo);
             if (UserInfo.Message == Message.Success)
             {
@@ -102,7 +101,7 @@ namespace UsersManagerAPI.Controllers
             }
         }
 
-        [HttpPost("ResetPassword")]
+        [HttpPost("ChangePassword")]
         async public Task<IActionResult> ChangePassword([FromBody]ResetPasswordInfo ResetInfo)
         {
             UserInfo.UserName = ResetInfo.UserName;
