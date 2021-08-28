@@ -49,24 +49,24 @@ namespace UsersManagerAPI
 
             services.AddControllers();
 
-            #region Authentication & Autherization
-            services.AddAuthentication(o =>
-            {
-                o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(o =>
-            {
-                o.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Global.JWTKey)),
-                    ValidateLifetime = true,
-                    ValidateAudience = false,
-                    ValidateIssuer = false,
-                    ClockSkew = TimeSpan.Zero
-                };
-            });
-            #endregion
+            //#region Authentication & Autherization
+            //services.AddAuthentication(o =>
+            //{
+            //    o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            //}).AddJwtBearer(o =>
+            //{
+            //    o.TokenValidationParameters = new TokenValidationParameters
+            //    {
+            //        ValidateIssuerSigningKey = true,
+            //        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Global.JWTKey)),
+            //        ValidateLifetime = true,
+            //        ValidateAudience = false,
+            //        ValidateIssuer = false,
+            //        ClockSkew = TimeSpan.Zero
+            //    };
+            //});
+            //#endregion
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -79,9 +79,9 @@ namespace UsersManagerAPI
 
             app.UseRouting();
 
-            app.UseAuthentication();
+            //app.UseAuthentication();
 
-            app.UseAuthorization();
+            //app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
