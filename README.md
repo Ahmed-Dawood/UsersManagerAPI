@@ -6,4 +6,4 @@ for this web api to work u need to do the following:
 - set your own DB connection string in appsettings.json
 - set your own Domain Name in appsettings.json for confirm mail click url
 - set you 32 char secret key that will be used across your APIs to verify your JWT tokens
-- change the IUserInfo & UserInfo to fit your own DB structure
+- change the IUserInfo & UserInfo to fit your own DB structure with the same names to keep DI or change names and change DI in startup
